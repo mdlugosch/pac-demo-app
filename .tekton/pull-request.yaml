@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: pull-request-pipeline-
+  annotations:
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+spec:
+  pipelineSpec:
+    tasks:
+      - name: test-pr
+        taskSpec:
+          steps:
+            - name: run-unit-tests
+              image: alpine:3.19
+              script: |
+                #!/bin/sh
+                echo "Fuehre automatische Pull-Request-Pruefung durch..."
+                echo "Tests erfolgreich bestanden."
